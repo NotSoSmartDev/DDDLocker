@@ -26,7 +26,7 @@ async def acquire(name: str, uow: unit_of_work.AsyncSqlUnitOfWork):
         if not lock:
             raise LockNotExists()
 
-        if lock.is_locked:
+        if lock.is_acquired:
             raise AlreadyAcquired(f'Lock {lock.name} already acquired.')
 
         lock.acquire()

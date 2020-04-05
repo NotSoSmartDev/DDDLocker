@@ -4,6 +4,10 @@ class Lock:
 
         self.is_locked = is_locked
 
+    @property
+    def is_acquired(self) -> bool:
+        return self.is_locked
+
     def acquire(self):
         self.is_locked = True
 
