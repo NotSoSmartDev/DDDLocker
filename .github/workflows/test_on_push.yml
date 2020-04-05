@@ -50,4 +50,4 @@ jobs:
         env:
           DSN: 'postgresql://test:test@localhost:${{ job.services.postgres.ports[5432] }}/test'
         run: |
-          python -m pytest
+          python -m pytest --cov=src
