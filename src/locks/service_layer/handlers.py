@@ -41,6 +41,5 @@ async def release(name: str, uow: unit_of_work.AsyncSqlUnitOfWork):
             raise LockNotExists()
 
         lock.release()
-
         await uow.locks.update(lock)
         await uow.commit()
