@@ -4,21 +4,20 @@ import sqlalchemy
 from fastapi import FastAPI, Body, Depends, status, Response
 
 from . import views
+from .config import settings
 from .locks.adapters.orm import metadata
 from .locks.service_layer import handlers
 from .locks.service_layer.unit_of_work import AsyncSqlUnitOfWork
-
-DSN = 'postgresql://test:test@0.0.0.0:5436/test'
 
 api = FastAPI()
 
 
 @api.on_event('startup')
 async def startup():
-    engine = sqlalchemy.create_engine(DSN)
+    engine = sqlalchemy.create_engine(settings.dsn)
     metadata.create_all(engine)
 
-    api.state.db_pool = await asyncpg.create_pool(DSN)
+    api.state.db_pool = await asyncpg.create_pool(settings.dsn)
 
 
 async def get_uow():
