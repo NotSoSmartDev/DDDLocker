@@ -29,7 +29,7 @@ async def acquire(name: str, uow: unit_of_work.AsyncSqlUnitOfWork):
         if lock.is_locked:
             raise AlreadyAcquired(f'Lock {lock.name} already acquired.')
 
-        lock.is_locked = True
+        lock.acquire()
         await uow.locks.update(lock)
         await uow.commit()
 
@@ -40,6 +40,7 @@ async def release(name: str, uow: unit_of_work.AsyncSqlUnitOfWork):
         if not lock:
             raise LockNotExists()
 
-        lock.is_locked = False
+        lock.release()
+
         await uow.locks.update(lock)
         await uow.commit()

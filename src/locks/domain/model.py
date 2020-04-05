@@ -3,3 +3,9 @@ class Lock:
         self.name = name
 
         self.is_locked = is_locked
+
+    def acquire(self):
+        self.is_locked = True
+
+    def release(self):
+        self.is_locked = False
