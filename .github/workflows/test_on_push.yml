@@ -10,4 +10,4 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-python@v1
         with:
-          python-version: '3.8.1'
+          python-version: '3.8.2'
