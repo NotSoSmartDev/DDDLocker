@@ -3,6 +3,7 @@ import sqlalchemy
 
 from fastapi import FastAPI, Body, Depends, status, Response
 
+from . import views
 from .locks.adapters.orm import metadata
 from .locks.service_layer import handlers
 from .locks.service_layer.unit_of_work import AsyncSqlUnitOfWork
@@ -48,17 +49,9 @@ async def release_lock(name: str, uow=Depends(get_uow)):
 
 @api.get('/locks/{name}')
 async def lock_info(name: str, uow=Depends(get_uow)):
-    async with uow:
-        row = await uow.conn.fetchrow(
-            'SELECT * FROM locks WHERE name=$1',
-            name,
-        )
-        await uow.commit()
+    lock = await views.get_lock(name, uow)
 
-    if not row:
+    if not lock:
         return Response(status_code=status.HTTP_404_NOT_FOUND)
 
-    return {
-        'name': row['name'],
-        'is_locked': row['is_locked'],
-    }
+    return lock
