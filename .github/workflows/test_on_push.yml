@@ -3,8 +3,8 @@ name: CI
 on: [push]
 
 jobs:
-  tests:
-    runs_on: [ubuntu-latest]
+  test:
+    runs-on: [ubuntu-latest]
 
     steps:
       - uses: actions/checkout@master
