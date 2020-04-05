@@ -1,4 +1,3 @@
-import abc
 from typing import Optional
 
 import asyncpg
@@ -6,17 +5,7 @@ import asyncpg
 from src.locks.domain.model import Lock
 
 
-class AbstractRepo(abc.ABC):
-    @abc.abstractmethod
-    async def get(self, name: str) -> Optional[Lock]:
-        raise NotImplemented
-
-    @abc.abstractmethod
-    async def create_or_none(self, lock: Lock):
-        raise NotImplemented
-
-
-class AsyncSqlRepo(AbstractRepo):
+class AsyncSqlRepo:
     def __init__(self, conn: asyncpg.Connection):
         self.conn = conn
 
