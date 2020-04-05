@@ -8,11 +8,11 @@ from src.locks.domain.model import Lock
 
 class AbstractRepo(abc.ABC):
     @abc.abstractmethod
-    def get(self, name: str) -> Optional[Lock]:
+    async def get(self, name: str) -> Optional[Lock]:
         raise NotImplemented
 
     @abc.abstractmethod
-    def create_or_none(self, lock: Lock):
+    async def create_or_none(self, lock: Lock):
         raise NotImplemented
 
 

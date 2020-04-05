@@ -11,7 +11,7 @@ async def get_lock(name: str, uow: AsyncSqlUnitOfWork) -> Optional[dict]:
         await uow.commit()
 
     if not row:
-        return
+        return None
 
     return {
         'name': row['name'],
