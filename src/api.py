@@ -26,12 +26,18 @@ async def get_uow():
 
 
 @api.post('/locks', status_code=status.HTTP_201_CREATED)
-async def create_lock(name: str = Body(..., embed=True), uow=Depends(get_uow)):
+async def create_lock(
+    name: str = Body(..., embed=True),
+    uow: AsyncSqlUnitOfWork = Depends(get_uow),
+):
     await handlers.add_lock(name, uow)
 
 
 @api.post('/locks/{name}/acquire', status_code=status.HTTP_200_OK)
-async def acquire_lock(name: str, uow=Depends(get_uow)):
+async def acquire_lock(
+    name: str,
+    uow: AsyncSqlUnitOfWork = Depends(get_uow),
+):
     try:
         await handlers.acquire(name, uow)
     except handlers.LockNotExists:
@@ -39,7 +45,10 @@ async def acquire_lock(name: str, uow=Depends(get_uow)):
 
 
 @api.post('/locks/{name}/release', status_code=status.HTTP_200_OK)
-async def release_lock(name: str, uow=Depends(get_uow)):
+async def release_lock(
+    name: str,
+    uow: AsyncSqlUnitOfWork = Depends(get_uow),
+):
     try:
         await handlers.release(name, uow)
     except handlers.LockNotExists:
@@ -47,7 +56,10 @@ async def release_lock(name: str, uow=Depends(get_uow)):
 
 
 @api.get('/locks/{name}')
-async def lock_info(name: str, uow=Depends(get_uow)):
+async def lock_info(
+    name: str,
+    uow: AsyncSqlUnitOfWork = Depends(get_uow),
+):
     lock = await views.get_lock(name, uow)
 
     if not lock:
