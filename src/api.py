@@ -12,7 +12,7 @@ from .locks.service_layer.unit_of_work import AsyncSqlUnitOfWork
 api = FastAPI()
 
 
-@api.on_event('startup')
+@api.on_event("startup")
 async def startup():
     engine = sqlalchemy.create_engine(settings.dsn)
     metadata.create_all(engine)
@@ -25,18 +25,16 @@ async def get_uow():
         yield AsyncSqlUnitOfWork(conn)
 
 
-@api.post('/locks', status_code=status.HTTP_201_CREATED)
+@api.post("/locks", status_code=status.HTTP_201_CREATED)
 async def create_lock(
-    name: str = Body(..., embed=True),
-    uow: AsyncSqlUnitOfWork = Depends(get_uow),
+    name: str = Body(..., embed=True), uow: AsyncSqlUnitOfWork = Depends(get_uow),
 ):
     await handlers.add_lock(name, uow)
 
 
-@api.post('/locks/{name}/acquire', status_code=status.HTTP_200_OK)
+@api.post("/locks/{name}/acquire", status_code=status.HTTP_200_OK)
 async def acquire_lock(
-    name: str,
-    uow: AsyncSqlUnitOfWork = Depends(get_uow),
+    name: str, uow: AsyncSqlUnitOfWork = Depends(get_uow),
 ):
     try:
         await handlers.acquire(name, uow)
@@ -44,10 +42,9 @@ async def acquire_lock(
         return Response(status_code=status.HTTP_404_NOT_FOUND)
 
 
-@api.post('/locks/{name}/release', status_code=status.HTTP_200_OK)
+@api.post("/locks/{name}/release", status_code=status.HTTP_200_OK)
 async def release_lock(
-    name: str,
-    uow: AsyncSqlUnitOfWork = Depends(get_uow),
+    name: str, uow: AsyncSqlUnitOfWork = Depends(get_uow),
 ):
     try:
         await handlers.release(name, uow)
@@ -55,10 +52,9 @@ async def release_lock(
         return Response(status_code=status.HTTP_404_NOT_FOUND)
 
 
-@api.get('/locks/{name}')
+@api.get("/locks/{name}")
 async def lock_info(
-    name: str,
-    uow: AsyncSqlUnitOfWork = Depends(get_uow),
+    name: str, uow: AsyncSqlUnitOfWork = Depends(get_uow),
 ):
     lock = await views.get_lock(name, uow)
 

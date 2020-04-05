@@ -4,7 +4,8 @@ metadata = MetaData()
 
 
 locks = Table(
-    'locks', metadata,
-    Column('name', String, primary_key=True),
-    Column('is_locked', Boolean, nullable=False),
+    "locks",
+    metadata,
+    Column("name", String, primary_key=True),
+    Column("is_locked", Boolean, nullable=False),
 )
