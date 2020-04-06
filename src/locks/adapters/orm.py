@@ -1,6 +1,6 @@
-from sqlalchemy import Table, Column, String, Boolean, MetaData
+from sqlalchemy import Table, Column, String, Boolean
 
-metadata = MetaData()
+from src.metadata import metadata
 
 
 locks = Table(

@@ -5,7 +5,7 @@ from fastapi import FastAPI, Body, Depends, status, Response
 
 from . import views
 from .config import settings
-from .locks.adapters.orm import metadata
+from .metadata import metadata
 from .locks.service_layer import handlers
 from .locks.service_layer.unit_of_work import AsyncSqlUnitOfWork
 
